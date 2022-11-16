@@ -1,4 +1,6 @@
-# pip3 install -r requirements.txt
+# client.py requirements
+# pip3 install -r client/requirements.txt
+
 asyncio
 websockets
 prompt_toolkit

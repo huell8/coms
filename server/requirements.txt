@@ -1,3 +1,5 @@
-# pip3 install -r server_requirements.txt
+# server.py requirements
+# pip3 install -r server/requirements.txt
+
 asyncio
 websockets
