@@ -1,0 +1,27 @@
+<!-- client.html -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>coms web client</title>
+  </head>
+  <body>
+    <input type="text" placeholder="server address" id="server_addr">
+    <button onclick="connect()">connect</button><br>
+    <div id="received"> </div><br>
+    <input type="text" placeholder="message" id="msg" autofocus>
+    <button onclick="send_msg()">send</button><br>
+  </body>
+  <script type="text/javascript">
+    let socket;
+    function connect() {
+        let server_addr = document.getElementById("server_addr").value;
+        socket = new WebSocket(server_addr);
+        socket.addEventListener('message', function(event) {
+            console.log(event.data);
+        });
+    }
+    let send_msg = () => socket.send(document.getElementById("msg").value);
+  </script>
+</html>
