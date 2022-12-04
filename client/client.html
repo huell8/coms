@@ -5,23 +5,50 @@
   <head>
     <meta charset="UTF-8">
     <title>coms web client</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js" integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o=" crossorigin="anonymous"></script>
   </head>
   <body>
     <input type="text" placeholder="server address" id="server_addr">
+    <input type="password" placeholder="passphrase" id="passphrase">
     <button onclick="connect()">connect</button><br>
-    <div id="received"> </div><br>
-    <input type="text" placeholder="message" id="msg" autofocus>
-    <button onclick="send_msg()">send</button><br>
+    <div id="err"></div>
+    <div id="ui-connected" style="visibility: hidden">
+      <div id="received"></div><br>
+      <input type="text" placeholder="message" id="msg" autofocus>
+      <button onclick="send_msg()">send</button><br>
+    </div>
   </body>
   <script type="text/javascript">
-    let socket;
+    let socket, server_addr, passphrase;
     function connect() {
-        let server_addr = document.getElementById("server_addr").value;
+        server_addr = document.getElementById("server_addr").value;
+        passphrase  = document.getElementById("passphrase").value;
         socket = new WebSocket(server_addr);
-        socket.addEventListener('message', function(event) {
-            console.log(event.data);
-        });
+        socket.onopen = function(event) {
+            console.log(event);
+            document.getElementById("err").innerHTML = "";
+            document.getElementById("ui-connected").style.visibility = "visible";
+            document.getElementById("received").innerHTML = "";
+        }
+        socket.onclose = function(event) {
+            console.log(event);
+            document.getElementById("err").innerHTML = event;
+            document.getElementById("ui-connected").style.visibility = "hidden";
+        }
+        socket.onerror = function(event) {
+            console.log(event);
+            document.getElementById("err").innerHTML = event;
+            document.getElementById("ui-connected").style.visibility = "hidden";
+        }
+        socket.onmessage = function(event) {
+            msg_rcv = decrypt(event.data, passphrase);
+            document.getElementById("received").innerHTML += msg_rcv+'<br>';
+        }
     }
-    let send_msg = () => socket.send(document.getElementById("msg").value);
+    function send_msg() {
+        socket.send(encrypt(document.getElementById("msg").value));
+    }
+    const encrypt = (msg) => CryptoJS.AES.encrypt(msg, passphrase); 
+    const decrypt = (msg) => CryptoJS.AES.decrypt(msg, passphrase); 
   </script>
 </html>
