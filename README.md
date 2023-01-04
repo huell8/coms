@@ -1,24 +1,15 @@
 # coms - coms open messaging system
 
 ## about
-aim of coms is to provide a secure, lightweight, bloat-free chatroom with zero logginng, total transience and a nice looking tui
+aim of coms is to provide a secure, lightweight, bloat-free chatroom with zero logginng and total transience
 
 ## instalation
 ### client
-```bash
-# install virtualenv if needed
-# pip3 install virtualenv
-
-# create and activate virtual enviroment
-virtualenv venv
-source venv/bin/activate
-# install requirements
-pip3 install -r client/requirements.txt
-
-# lauch client
-python3 client/client.py --help
-```
+launch client/client.html in your browser of choice \
+type in server address (ex. ws://localhost:9696) \
+and password used for symetric encryption \
 ### server 
+if you need your server to last between logouts consider using a terminal multiplexer
 ```bash
 # install virtualenv if needed
 # pip3 install virtualenv
