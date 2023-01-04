@@ -42,11 +42,18 @@
         }
         socket.onmessage = function(event) {
             msg_rcv = decrypt(event.data, passphrase);
-            document.getElementById("received").innerHTML += msg_rcv+'<br>';
+            document.getElementById("received").innerHTML += hex_to_ascii(msg_rcv)+'<br>';
         }
     }
     function send_msg() {
         socket.send(encrypt(document.getElementById("msg").value));
+    }
+    function hex_to_ascii(input_hex) {
+        var hex = input_hex.toString();//force conversion
+        var str = '';
+        for (var i = 0; i < hex.length; i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+        return str;
     }
     const encrypt = (msg) => CryptoJS.AES.encrypt(msg, passphrase); 
     const decrypt = (msg) => CryptoJS.AES.decrypt(msg, passphrase); 
